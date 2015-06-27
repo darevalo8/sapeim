@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista De Marcas</title>
+</head>
+<body>
+    <h1>Listas de Marcas</h1>
+    {% for marcas in lista %}
+        <ul>
+            <li>{{ marcas }} <a href="delete-bland/{{ marcas.id }}">Eliminar</a></li>
+        </ul>
+    {% endfor %}
+    <a href="add-bland">Añadir marca</a>
+</body>
+</html>

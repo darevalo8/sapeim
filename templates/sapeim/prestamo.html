@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prestamos</title>
+</head>
+<body>
+    <h1>Prestamos</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="number" name="documento">
+        {{prestamo.as_p}}
+        {{ detalle.management_form }}
+        {% for f in detalle %}
+            {{f.as_p}}
+        {% endfor %}
+        <button>Prestar</button>
+    </form>
+</body>
+</html>
