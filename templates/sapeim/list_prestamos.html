@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista De prestamos</title>
+</head>
+<body>
+    <ul>
+        {% for prestamo in prestmos %}
+            <a href="detail-prestamo/{{prestamo.id}}"><li>{{ prestamo.user.nombre }} {{ prestamo.user.apellido }}</li></a><a href="devoluciones/{{prestamo.id}}">devolver</a>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,14 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add-Elemento</title>
-</head>
-<body>
-    <form method="post">
+{% extends "base.html" %} 
+
+{% block title %}
+    Add Element
+{% endblock %}
+
+{% block content %}
+    <h1>Hola a todos</h1>   
+    {% block form_post %}
         {% csrf_token %}
         {{form.as_p}}
         <input type="submit" value="enviar">
-    </form>
-</body>
-</html>
+{% endblock  %}
+{% endblock  %}
+

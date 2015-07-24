@@ -39,6 +39,13 @@ class PrestamoForm(forms.ModelForm):
         fields = ('fecha', 'hora_inicio', 'hora_fin')
 
 
+class PrestaForm(forms.ModelForm):
+
+    class Meta:
+        model = Prestamo
+        fields = ('fecha', 'hora_inicio', 'hora_fin', 'devolucion')
+
+
 class DetalleForm(forms.ModelForm):
 
     class Meta:
