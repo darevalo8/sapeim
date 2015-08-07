@@ -6,7 +6,7 @@ from django.views.generic import View, ListView, CreateView, UpdateView, DeleteV
 from django.views.generic import DetailView
 from .forms import AddElementForm, AddBlandForm, UserProfileForm, UserForm
 from .forms import PrestamoForm, DetalleForm, PrestaForm
-from .models import Element, Bland, UserProfile, Prestamo, DetallePrestamo
+from .models import Element, Bland, UserProfile, Prestamo, DetallePrestamo, ElementType
 
 
 class IndexView(ListView):
@@ -17,14 +17,14 @@ class IndexView(ListView):
 
 class AddElement(CreateView):
     form_class = AddElementForm
-    template_name = 'sapeim/add_elemento.html'
+    template_name = 'sapeim/admin/add_elemento.html'
     success_url = '/'
 
 
 class UpdateElement(UpdateView):
     form_class = AddElementForm
     model = Element
-    template_name = 'sapeim/edit_element.html'
+    template_name = 'sapeim/admin/edit_element.html'
     #fields = ('bland', 'element_type', 'serial', 'serial_sena', 'modelo', 'features')
     # esta funcion es para que me deje en la misma url donde me encuentro :D
 
@@ -36,27 +36,49 @@ class UpdateElement(UpdateView):
 class DeleteElement(DeleteView):
     #form_class = AddElementForm
     model = Element
-    template_name = 'sapeim/delete_element.html'
+    template_name = 'sapeim/admin/delete_element.html'
     success_url = '/'
 
 
 class ListBland(ListView):
     model = Bland
-    template_name = 'sapeim/list_bland.html'
+    template_name = 'sapeim/admin/list_bland.html'
     context_object_name = 'lista'
 
 
 class AddBland(CreateView):
     form_class = AddBlandForm
-    success_url = 'list-bland'
-    template_name = 'sapeim/add_elemento.html'
+    success_url = 'sapeim:list-bland'
+    template_name = 'sapeim/admin/add_bland.html'
+# falta hacer el update de marcas
 
 
 class DeleteBland(DeleteView):
     model = Bland
-    success_url = '/list-bland'
-    template_name = 'sapeim/delete_element.html'
+    success_url = 'sapeim:list-bland'
+    template_name = 'sapeim/admin/delete_element.html'
     context_object_name = 'lista'
+
+
+class ListElementType(ListView):
+    model = ElementType
+    template_name = 'sapeim/admin/list_type.html'
+    context_object_name = "tipo"
+
+
+class AddElementType(CreateView):
+    model = ElementType
+    success_url = "sapeim:list-type"
+    template_name = 'sapeim/admin/add_type.html'
+    fields = ('element_type',)
+
+
+class DeleteElementType(DeleteView):
+    model = ElementType
+    success_url = 'sapeim:list_type'
+    template_name = 'sapeim/admin/delete_element.html'
+    context_object_name = 'type'
+#falta hacer el update de tipo de elemento
 
 
 def registro(request):
@@ -76,19 +98,19 @@ def registro(request):
     else:
         user_u = UserForm()
         user_pro = UserProfileForm()
-    return render(request, 'sapeim/registro.html', {'user': user_u, 'profile': user_pro})
+    return render(request, 'sapeim/admin/registro.html', {'user': user_u, 'profile': user_pro})
 
 
 class ListPrestamo(ListView):
     model = Prestamo
-    template_name = 'sapeim/list_prestamos.html'
+    template_name = 'sapeim/admin/list_prestamos.html'
     context_object_name = 'prestmos'
     queryset = Prestamo.objects.filter(devolucion=False)
 
 
 class DetailPrestamo(DetailView):
     model = Prestamo
-    template_name = 'sapeim/detail_prestamo.html'
+    template_name = 'sapeim/admin/detail_prestamo.html'
 
     def get_context_data(self, **kwargs):
             # Call the base implementation first to get a context
@@ -100,43 +122,48 @@ class DetailPrestamo(DetailView):
 
 def prestamo(request):
     query = request.POST.get('documento')
-    user_pres = UserProfile.objects.get(documento=query)
-    ########
-    detalle_prestamo = formset_factory(DetalleForm, extra=2)
-    #hago un formset_factory, los formset
-    #sirver para agregar otro formulario mas por asi decirlo
-    #reciben como parametro el form creado en forms.py y un parametro extra
-    #que sera las vece que se repetira el modelo form
-    #################################################
+    print(query)
     if request.method == 'POST':
-        prestamo = PrestamoForm(request.POST)
-        detalle = detalle_prestamo(request.POST)
+        user_pro = UserProfile.objects.get(documento=query)
+        prestamo = PrestaForm(request.POST)
+        detail = DetalleForm(request.POST)
 
-        if prestamo.is_valid() and detalle.is_valid():
-            pres = prestamo.save(commit=False)
-            pres.user = user_pres
-            pres.save()
-            ############################
-            # hago un for con el formulario detalle porque
-            # el es un formset ya osea que tiene que guardar la cantidad
-            # de registro guardada en este caso yo le puse extra = 2 asi que itera
-            #dos veces
-            #############################
-            for gurdar in detalle:
-                detail = gurdar.save(commit=False)
-                detail.prestamo = pres# añado el prestamo al cual pertenece elemento
-                elemento = detail.element# le asigno a la variable elemento el , elemento del prestamo, el no retorna un id retorna el modelo del elemento
-                element = Element.objects.get(modelo=elemento)#aca filtro los elementos a prestamar por modelo ya que el modelo elemento retorna el modelo, lo filtro por modelo se lo asigno a la variable element
-                element.state = 2#aca le cambio el estado al elemento a ocupado
-                element.save()
-                detail.save()
-            return redirect('/')
+        if prestamo.is_valid() and detail.is_valid():
+            detalle = detail.save(commit=False)
+            elemento = Element.objects.get(modelo=detalle.element)
+            if elemento.state == 2:
+                return HttpResponse('este elemento ya esta prestado :D')
+            else:
+                presta = prestamo.save(commit=False)
+                presta.user = user_pro
+                presta.save()
+                elemento.state = 2
+                elemento.save()
+                detalle.prestamo = presta
+                detalle.save()
         else:
-            print("error")
+            print("hola")
+        return redirect('sapeim:prestamos')
     else:
-        prestamo = PrestamoForm()
-        detalle = detalle_prestamo()
-        print("estoy aca")
-    return render(request, 'sapeim/prestamo.html', {'prestamo': prestamo, 'detalle': detalle})
+        prestamo = PrestaForm()
+        detail = DetalleForm()
+    return render(request, 'sapeim/admin/prestamo.html', {'prestamo': prestamo, 'detalle': detail})
 
 
+def devolucion(request, **kwargs):
+    pk = kwargs.get('pk')
+    prestamo = Prestamo.objects.get(pk=pk)
+    detalle = DetallePrestamo.objects.get(prestamo=pk)
+    if request.method == 'POST':
+        presta = PrestamoForm(request.POST, instance=prestamo)
+        if presta.is_valid():
+            pres = presta.save(commit=False)
+            if pres.devolucion:
+                elemento = Element.objects.get(modelo=detalle.element)
+                elemento.state = 1
+                elemento.save()
+                pres.save()
+                return redirect('sapeim:prestamos')
+    else:
+        presta = PrestamoForm(instance=prestamo)
+    return render(request, 'sapeim/admin/devoluciones.html', {'prestamo': presta, 'detalle': detalle})

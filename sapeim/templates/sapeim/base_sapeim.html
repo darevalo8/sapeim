@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'sapeim/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'sapeim/css/estilos.css' %}">
+{% endblock css %}
+
+{% block js %}
+    <script src="{% static 'sapeim/js/vendor/jquery.js' %}"></script>
+    <script src="{% static 'sapeim/js/vendor/bootstrap.min.js' %}"></script>
+    {#<script src="{% static 'sapeim/js/vendor/hola.js' %}"></script>#}
+{% endblock js %}

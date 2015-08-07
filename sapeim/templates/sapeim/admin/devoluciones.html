@@ -6,12 +6,11 @@
 </head>
 <body>
     <form method="post">
+        <p>Elemento: {{detalle.element}}</p>
         {% csrf_token %}
-        {{form.as_p}}
+        {{prestamo.as_p}}
         <button>Devolver</button>
     </form>
-    {% for ho in prueba %}
-        {{ho.element}}
-    {% endfor %}
+    
 </body>
 </html>

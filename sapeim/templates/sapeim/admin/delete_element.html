@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sapeim</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+
+        
+        {% if lista %}
+            <p>Seguro qe quieres eliminar  la marca {{lista.bland_name}}</p>
+            {% else %}
+                
+        {% endif %}
+        {% if type %}
+            <p>Seguro qe quieres eliminar el tipo de elemento {{type.element_type}}</p>
+            {% else %}
+                <p>Seguro qe quieres eliminar el elemento {{object.modelo}}</p>
+        {% endif %}
+        <input type="submit" value="eliminar">
+    </form>
+</body>
+</html>

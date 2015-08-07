@@ -1,0 +1,13 @@
+{% extends "sapeim/base_sapeim.html" %}
+
+{% block content %}
+    {% include "sapeim/admin/nav.html" %}
+    <div class="container">
+        {% for type in tipo %}
+            <ul>
+                <li>{{ type }}<a href="{% url 'sapeim:delete-type/{{ type.id }}' %}">Eliminar</a></li>
+            </ul>
+        {% endfor %}
+    </div>
+    
+{% endblock content %}

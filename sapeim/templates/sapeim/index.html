@@ -1,0 +1,93 @@
+{% extends "sapeim/base_sapeim.html" %}
+
+{% block title %}Index de sapeim{% endblock title %}
+
+{% block content %}
+    <header>
+        <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+            <div class="container">
+              <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navegacion-fm">
+                    <span class="sr-only"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a href="#" class="navbar-brand">Sapeim</a>
+              </div>
+              <!--Inicia Menu-->
+              <div class="collapse navbar-collapse" id="navegacion-fm">
+                  <ul class="nav navbar-nav">
+                      <li class="active"><a href="/">Inicio</a></li>
+                      <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="botton">
+                            Prestamos <span class="caret"></span>
+                          </a>
+                          <ul class="dropdown-menu" role="menu">
+                              <li><a href="prestamos">Ver prestamos</a></li>
+                              <li class="divider"></li>
+                              <li><a href="add-prestamo">Agregar prestamos</a></li>
+                          </ul>
+                      </li>
+                      <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="botton">
+                            Tipo elementos <span class="caret"></span>
+                          </a>
+                          <ul class="dropdown-menu" role="menu">
+                              <li><a href="list-type">Ver tipos</a></li>
+                              <li class="divider"></li>
+                              <li><a href="add-type">Agregar tipos</a></li>
+                          </ul>
+                      </li>
+                      <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="botton">
+                            Marcas <span class="caret"></span>
+                          </a>
+                          <ul class="dropdown-menu" role="menu">
+                              <li><a href="list-bland">Ver marcas</a></li>
+                              <li class="divider"></li>
+                              <li><a href="add-bland">Agregar marcas</a></li>
+                          </ul>
+                      </li>
+                      <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="botton">
+                            Elementos <span class="caret"></span>
+                          </a>
+                          <ul class="dropdown-menu" role="menu">
+                              <li><a href="#">Ver Elementos</a></li>
+                              <li class="divider"></li>
+                              <li><a href="add-elemento">Agregar Elementos</a></li>
+                          </ul>
+                      </li>
+                      <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="botton">
+                            Usuarios <span class="caret"></span>
+                          </a>
+                          <ul class="dropdown-menu" role="menu">
+                              <li><a href="#">Ver Usuarios</a></li>
+                              <li class="divider"></li>
+                              <li><a href="registro">Agregar Usuarios</a></li>
+                          </ul>
+                      </li>
+                      
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                         <li class="dropdown">
+                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Bienvenido / {{request.user}} <span class="caret"></span></a>
+                           <ul class="dropdown-menu">
+                             <li><a href="#">Cerrar Sesion</a></li>
+                             <li role="separator" class="divider"></li>
+                             <li><a href="#">Separated link</a></li>
+                           </ul>
+                         </li>
+                       </ul>
+              </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container well">
+       {% for elementos in elemento %}
+          <p>{{ elementos }}<a href="delete-elemento/{{elementos.id}}">Eliminar</a></p>
+       {% endfor %}
+    </div>
+{% endblock content %}

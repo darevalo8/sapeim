@@ -8,12 +8,10 @@
     <h1>Prestamos</h1>
     <form method="POST">
         {% csrf_token %}
-        <input type="number" name="documento">
+        
         {{prestamo.as_p}}
-        {{ detalle.management_form }}
-        {% for f in detalle %}
-            {{f.as_p}}
-        {% endfor %}
+        <p>Elemento: {{detalle.element}}</p>
+        <input type="number" name="documento">
         <button>Prestar</button>
     </form>
 </body>

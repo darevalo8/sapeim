@@ -32,14 +32,14 @@ class UserProfileForm(forms.ModelForm):
         fields = ('nombre', 'apellido', 'email', 'documento', 'document_type', 'role')
 
 
-class PrestamoForm(forms.ModelForm):
+class PrestaForm(forms.ModelForm):
 
     class Meta:
         model = Prestamo
         fields = ('fecha', 'hora_inicio', 'hora_fin')
 
 
-class PrestaForm(forms.ModelForm):
+class PrestamoForm(forms.ModelForm):
 
     class Meta:
         model = Prestamo

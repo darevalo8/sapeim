@@ -1,0 +1,12 @@
+{% extends "sapeim/base_sapeim.html" %}
+
+{% block content %}
+    {% include "sapeim/admin/nav.html" %}
+    <div class="container">
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button>Añadir</button>
+        </form>
+    </div>
+{% endblock content %}

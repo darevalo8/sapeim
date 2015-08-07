@@ -12,9 +12,9 @@ class BlandAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(models.DocumentType)
-class DocumentTypeAdmin(admin.ModelAdmin):
-    pass
+#@admin.register(models.DocumentType)
+#class DocumentTypeAdmin(admin.ModelAdmin):
+#    pass
 
 
 @admin.register(models.ElementType)

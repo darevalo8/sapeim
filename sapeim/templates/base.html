@@ -6,14 +6,13 @@
         
     {% endblock %}</title>
 </head>
+{% block css %}{% endblock css %}
 <body>
+    
     {% block content %}
-        <form method="post">
-        {% block form_post %}
-            
-        {% endblock  %}
-    </form>
-    {% endblock  %}
+    {% endblock content %}
+
+    {% block js %}{% endblock js %}
     
 </body>
 </html>

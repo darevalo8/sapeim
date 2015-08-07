@@ -17,13 +17,6 @@ class Role(models.Model):
         return self.role_name
 
 
-class DocumentType(models.Model):
-    document_type = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.document_type
-
-
 class ElementType(models.Model):
     element_type = models.CharField(max_length=100)
 
@@ -50,9 +43,10 @@ class UserProfile(models.Model):
     nombre = models.CharField(blank=True, max_length=100)
     apellido = models.CharField(blank=True, max_length=100)
     email = models.EmailField()
-    documento = models.IntegerField(blank=True, null=True)
-    document_type = models.ForeignKey(DocumentType)
-    role = models.ForeignKey(Role, blank=True, null=True)
+    opciones = ((1, 'CC'), (2, 'Pasaporte'), (3, 'TI'))
+    document_type = models.IntegerField(choices=opciones, default=1)
+    documento = models.IntegerField(unique=True)
+    role = models.ForeignKey(Role)
 
     def __str__(self):
         return self.username.username
@@ -61,8 +55,8 @@ class UserProfile(models.Model):
 class Prestamo(models.Model):
     user = models.ForeignKey(UserProfile)
     fecha = models.DateField(default=datetime.datetime.today)
-    hora_inicio = models.TimeField(blank=True)
-    hora_fin = models.TimeField(blank=True)
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
     devolucion = models.BooleanField(default=False)
 
     def __str__(self):
